@@ -49,7 +49,11 @@ public class DepartmentListController implements Initializable {
 		//createDialogForm(String asoluteName, Stage parentStage) estou chamando a função no clique do botão
 		// e passando dois paramentros, o primeiro é o caminho do formulário e o segundo é o pai da janela
 		Stage parentStage = Utils.currentStage(event);
-		createDialogForm("/gui/DepartmentForm.fxml", parentStage);
+		//como é um botao pra cadastrar um novo dptp o form começa vazio
+		//então instancio um dpto vazio:
+		Department obj = new Department();
+		//tenho que injetar o objeto no controlador do form, pra isso passo o parametro obj
+		createDialogForm(obj,"/gui/DepartmentForm.fxml", parentStage);
 	}
 	
 	public void setDepartmentService (DepartmentService service) {
@@ -87,11 +91,20 @@ public class DepartmentListController implements Initializable {
 	//FUNÇÃO PARA CARREGAR A JANELA DO FORMULÁRIO PARA PREENCHER UM NOVO DEPARTAMENTO
 	// ESSA FUNÇÃO DEVERÁ SER CHAMADA NO BOTÃO NOVO NA TELA DE DEPARTAMENTOS - VER LINHA 46
 	//quando criamos uma janela de dialogo temos que informar qual Stage criou essa janela : Stage parentStage
-	private void createDialogForm(String asoluteName, Stage parentStage) {
+	private void createDialogForm(Department obj, String asoluteName, Stage parentStage) {
 		//instanciar a janela de diáloago
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(asoluteName));
 			Pane pane = loader.load();
+			
+			//o método vai injetar o dpto no controlador da tela de form
+			//para isso é necessário pegar uma referencia para o controlador
+			DepartmentFormController controller = loader.getController();
+			//injetando o departamento no controlador
+			controller.setDepartment(obj);
+			// carregar o obj no form
+			controller.updateFormData();
+						
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Enter Department data");
