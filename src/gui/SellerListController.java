@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -24,6 +27,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
 import model.services.SellerService;
@@ -88,12 +93,12 @@ public class SellerListController implements Initializable, DataChangeListener {
 	private void initializeNodes() {
 		//iniciar a o compartamento das colunas
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
+		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("Name"));
 		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-		Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
+	//	Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
 		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
-		Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
+	//	Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
@@ -117,48 +122,48 @@ public class SellerListController implements Initializable, DataChangeListener {
 	//quando criamos uma janela de dialogo temos que informar qual Stage criou essa janela : Stage parentStage
 	private void createDialogForm(Seller obj, String asoluteName, Stage parentStage) {
 		//instanciar a janela de diáloago
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource(asoluteName));
-//			Pane pane = loader.load();
-//			
-//			//o método vai injetar o dpto no controlador da tela de form
-//			//para isso é necessário pegar uma referencia para o controlador
-//			SellerFormController controller = loader.getController();
-//			//injetando o departamento no controlador
-//			controller.setSeller(obj);
-//			//Me inscrevendo para escutar o evento do ondatachange
-//			controller.subscribeDataChangeListener(this);
-//			
-//			// carregar o obj no form
-//			controller.updateFormData();
-//			
-//			//Injetando SellerService
-//			controller.SetSellerService(new SellerService());
-//						
-//			
-//			Stage dialogStage = new Stage();
-//			dialogStage.setTitle("Enter Seller data");
-//			
-//			//quem vai ser a cena do stage? como é um novo Stage vai ser uma nova cena
-//			//o elemento raiz da cena é o pane
-//			dialogStage.setScene(new Scene(pane));
-//			//setResizable serve pra dizer que a caixa de dialago pode ou não ser redimensionada aceita true ou false
-//			dialogStage.setResizable(false);
-//			
-//			//quem é o Stage pai dessa janela?
-//			dialogStage.initOwner(parentStage);
-//			
-//			// initModality diz se a janela vai ser modal ou se vai ter outro comportamento
-//			//Modality.WINDOW_MODAL funciona como modal, enquando não fechar ela não pode acessar outra janela
-//			dialogStage.initModality(Modality.WINDOW_MODAL);
-//			
-//			dialogStage.showAndWait();
-//			
-//			
-//			
-//		} catch (IOException e) {
-//			Alerts.showAlert("IO Exception", "Error Loading view", e.getMessage(), AlertType.ERROR);
-//		}
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(asoluteName));
+			Pane pane = loader.load();
+			
+			//o método vai injetar o dpto no controlador da tela de form
+			//para isso é necessário pegar uma referencia para o controlador
+			SellerFormController controller = loader.getController();
+			//injetando o departamento no controlador
+			controller.setSeller(obj);
+			//Me inscrevendo para escutar o evento do ondatachange
+			controller.subscribeDataChangeListener(this);
+			
+			// carregar o obj no form
+			controller.updateFormData();
+			
+			//Injetando SellerService
+			controller.SetSellerService(new SellerService());
+						
+			
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Enter Seller data");
+			
+			//quem vai ser a cena do stage? como é um novo Stage vai ser uma nova cena
+			//o elemento raiz da cena é o pane
+			dialogStage.setScene(new Scene(pane));
+			//setResizable serve pra dizer que a caixa de dialago pode ou não ser redimensionada aceita true ou false
+			dialogStage.setResizable(false);
+			
+			//quem é o Stage pai dessa janela?
+			dialogStage.initOwner(parentStage);
+			
+			// initModality diz se a janela vai ser modal ou se vai ter outro comportamento
+			//Modality.WINDOW_MODAL funciona como modal, enquando não fechar ela não pode acessar outra janela
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			
+			dialogStage.showAndWait();
+			
+			
+			
+		} catch (IOException e) {
+			Alerts.showAlert("IO Exception", "Error Loading view", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 	@Override
