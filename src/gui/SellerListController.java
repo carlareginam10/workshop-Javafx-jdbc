@@ -31,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
@@ -96,9 +97,9 @@ public class SellerListController implements Initializable, DataChangeListener {
 		tableColumnName.setCellValueFactory(new PropertyValueFactory<>("Name"));
 		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		tableColumnBirthDate.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-	//	Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
+		Utils.formatTableColumnDate(tableColumnBirthDate, "dd/MM/yyyy");
 		tableColumnBaseSalary.setCellValueFactory(new PropertyValueFactory<>("baseSalary"));
-	//	Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
+		Utils.formatTableColumnDouble(tableColumnBaseSalary, 2);
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewSeller.prefHeightProperty().bind(stage.heightProperty());
@@ -138,7 +139,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 			controller.updateFormData();
 			
 			//Injetando SellerService
-			controller.SetSellerService(new SellerService());
+			controller.SetServices(new SellerService(), new DepartmentService());
+			controller.loadAssociateObjects();
 						
 			
 			Stage dialogStage = new Stage();
@@ -162,6 +164,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			
 			
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Error Loading view", e.getMessage(), AlertType.ERROR);
 		}
 	}
